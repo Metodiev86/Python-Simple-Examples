@@ -4,3 +4,4 @@ try:
     print("файл")
 except FileNotFoundError:
   print("Файла не е намерен!")
+input()

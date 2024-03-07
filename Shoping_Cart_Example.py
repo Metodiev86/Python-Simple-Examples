@@ -9,7 +9,7 @@ while True:
 		break
 	else:
 		while True:
-			count = int(input("Веведете брой: "))
+			count = float(input("Веведете брой: "))
 			if count <= 0:
 				print("Бройката НЕ може да е отрицателна")
 			else:
@@ -27,7 +27,7 @@ print(foods)
 print(prices)
 print(counts)
 
-for x,y in prices, counts:
+for x , y in prices, counts:
 	total = (x * y) + total
 
 print("----- Твоята Поръчка --------")
