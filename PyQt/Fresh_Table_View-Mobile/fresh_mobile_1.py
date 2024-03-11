@@ -123,7 +123,7 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(3, item)
         self.frameTirth = QtWidgets.QFrame(self.centralwidget)
-        self.frameTirth.setGeometry(QtCore.QRect(-10, 640, 391, 41))
+        self.frameTirth.setGeometry(QtCore.QRect(0, 640, 391, 41))
         self.frameTirth.setMouseTracking(False)
         self.frameTirth.setTabletTracking(False)
         self.frameTirth.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -234,10 +234,12 @@ class Ui_MainWindow(object):
         self.menu.addAction(self.action_4)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menu.menuAction())
-
+        self.readButton.clicked.connect(self.listBox_hide)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.comboBox.activated.connect(self.loadData_ListBox_Client)
+        self.listWidget.clicked.connect(self.on_current_index_listBox_changed)
+
     def loaddataTableView(self):
         """
 
@@ -268,14 +270,28 @@ class Ui_MainWindow(object):
         regions = my_session.query(Region).all()
         for region in regions:
             self.comboBox.addItem(region.Name)
-        clients = clients = my_session.query(Client).where(Client.Regions_ID == (self.comboBox.currentIndex()+1)).all()
+        clients = my_session.query(Client).where(Client.Regions_ID == (self.comboBox.currentIndex()+1)).all()
         for client in clients:
             self.listWidget.addItem(client.Name)
         print(self.comboBox.currentIndex())
 
+    def listBox_hide(self):
+        if self.listWidget.isVisible():
+            self.listWidget.hide()
+            self.frameSecond.hide()
+            self.frameTirth.hide()
+            self.tableWidget.show()
+            self.tableWidget.setGeometry(QtCore.QRect(0, 45, 381, 700))
+        else:
+            self.incialisation_Begin()     
     
-
-
+    def on_current_index_listBox_changed(self):
+        selected_item = self.listWidget.selectedItems()
+        list(selected_item)
+        for i in selected_item:
+            Selected_Index_List = my_session.query(Client).where(Client.Name == i.text()).all()
+        for j in Selected_Index_List:
+            print(j.Name + " " + str(j.Regions_ID))    
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -312,10 +328,12 @@ class Ui_MainWindow(object):
             self.listWidget.addItem(client.Name)
 
 
-    def incialisation_Begin():
-        ui.setupUi()
-        ui.loadData_ComboBox_Region
-
+    def incialisation_Begin(self):
+       self.loadData_ComboBox_Region()
+       self.frameSecond.show()
+       self.frameTirth.show()
+       self.listWidget.show()
+       self.tableWidget.hide()
 
 if __name__ == "__main__":
     import sys
