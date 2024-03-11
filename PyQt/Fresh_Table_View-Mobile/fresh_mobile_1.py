@@ -237,7 +237,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+        self.comboBox.activated.connect(self.loadData_ListBox_Client)
     def loaddataTableView(self):
         """
 
@@ -305,6 +305,7 @@ class Ui_MainWindow(object):
         self.action_4.setText(_translate("MainWindow", " Нов Артикул"))
 
     def loadData_ListBox_Client(self, index):
+         self.listWidget.clear()
          self.comboBox.senderSignalIndex()
          clients = clients = my_session.query(Client).where(Client.Regions_ID == (self.comboBox.currentIndex()+1)).all()
          for client in clients:
